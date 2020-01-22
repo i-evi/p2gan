@@ -1,6 +1,6 @@
 # P&sup2;-GAN Fast Style Transfer
 
-Code and pre-trained models for "[P&sup2;-GAN: EFFICIENT STYLE TRANSFER USING SINGLE STYLE IMAGE](http://127.0.0.1)"(Unavailable for now).
+Code and pre-trained models for "[P&sup2;-GAN: EFFICIENT STYLE TRANSFER USING SINGLE STYLE IMAGE](https://arxiv.org/abs/2001.07466)".
 
 ![front page image](https://github.com/i-evi/p2gan/raw/master/resources/front.png)
 
