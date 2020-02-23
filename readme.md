@@ -4,7 +4,7 @@ Code and pre-trained models for "[P&sup2;-GAN: Efficient Style Transfer Using Si
 
 ![front page image](https://github.com/i-evi/p2gan/raw/master/resources/front.png)
 
-- [P&sup2;GAN Fast Style Transfer](#P&sup2;GAN-Fast-Style-Transfer)
+- [P&sup2;-GAN Fast Style Transfer](#P&sup2;-GAN-Fast-Style-Transfer)
     - [Dependence](#dependence)
     - [Training](#training)
     - [Advanced Training Configurations](#advanced-training-configurations)
@@ -44,7 +44,7 @@ python train.py --model model_path --style style_image_path --dataset dataset_pa
 For example:
 
 ```bash
-python train.py --model model_save --style style/The_Starry_Night_Van_Gogh.jpg --dataset /home/username/Downloads/VOCdevkit/VOC2007/JPEGImages/ --lambda 5e-6
+python train.py --model model_save --style style/Van-Gogh-The-Starry-Night.jpg --dataset /home/username/Downloads/VOCdevkit/VOC2007/JPEGImages/ --lambda 5e-6
 ```
 Further, we added an argument `--lambda` in this example, it's the hyper parameter between 1e-6~1e-7 to balance content and style.
 
@@ -64,7 +64,7 @@ Sometimes the texture primitives may be larger than the default patch size which
 For example:
 
 ```bash
-python train.py --ps 15 --model model_save --style style/The_Starry_Night_Van_Gogh.jpg --dataset /home/username/Downloads/VOCdevkit/VOC2007/JPEGImages/ --lambda 5e-6
+python train.py --ps 15 --model model_save --style style/Van-Gogh-The-Starry-Night.jpg --dataset /home/username/Downloads/VOCdevkit/VOC2007/JPEGImages/ --lambda 5e-6
 ```
 
 Training with the command above, the patch size will be set to 15 * 15.

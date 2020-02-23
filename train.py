@@ -8,7 +8,7 @@ import vgg16part
 from argparse import ArgumentParser
 
 ls_files_to_json = util.ls_files_to_json
-make_input_batch = util.make_input_batch
+make_input_batch = util.make_input_batch # Patch Permutation
 open_img         = util.open_img
 pickup_list      = util.pickup_list
 images_batch     = util.images_batch
@@ -106,22 +106,21 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 		vgg_g.build(g_state)
 
 	dp_real = build_discriminator(input_s, patch_size=PATCH_SIZE, name='discriminator')
-	dp_fake = build_discriminator(g_state, patch_size=PATCH_SIZE, reuse=True)
+	dp_fake = build_discriminator(g_state, patch_size=PATCH_SIZE, name='discriminator', reuse=True)
 
 	d_raw = vgg_c.prob # 128 * 128 * 64
 	d_gen = vgg_g.prob # 128 * 128 * 64
 
-	mean_d_fake = tf.reduce_mean(dp_fake)
-
 	d_real_d = tf.reduce_mean(dp_real)
 	d_fake_d = tf.reduce_mean(dp_fake)
 
+	mean_d_fake = tf.reduce_mean(dp_fake)
 	d_fake_g = tf.reduce_mean((dp_fake) ** (1.0 - (dp_fake - mean_d_fake)))
 	# d_fake_g = tf.reduce_mean(dp_fake)
 
-
 	d_loss = -(tf.log(d_real_d) + tf.log(1 - d_fake_d))
 	g_loss = (tf.norm(d_raw - d_gen) ** 2)*LAMBDA /(BATCH_SIZE*((G_IMG_SIZE/VGG_L)*(G_IMG_SIZE/VGG_L))*VGG_FEATURES)-tf.log(d_fake_g)
+	# g_loss = tf.log(1 - d_fake_g) + (tf.norm(d_raw - d_gen) ** 2)*LAMBDA /(BATCH_SIZE*((G_IMG_SIZE/VGG_L)*(G_IMG_SIZE/VGG_L))*VGG_FEATURES)
 
 	d_var_ls = tf.trainable_variables(scope='discriminator')
 	# train_step_d = tf.train.AdamOptimizer(learning_rate=2e-4, beta1=0.5, beta2=0.9).minimize(d_loss, var_list=d_var_ls)
