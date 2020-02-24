@@ -4,6 +4,7 @@ import tensorflow as tf
 import util
 import time
 import model
+import os
 from argparse import ArgumentParser
 
 imbatch_read     = util.imbatch_read
@@ -57,6 +58,9 @@ BATCH_SIZE  = args.batch_size
 FEED_SIZE   = args.net_size
 IMGSRC_PATH = args.inp_path
 NOISE_RATE  = args.noise
+
+if (not os.path.isdir(args.out_path)):
+	os.makedirs(args.out_path)
 
 DEVICE = ''
 if args.use_cpu.upper()=='TRUE':
