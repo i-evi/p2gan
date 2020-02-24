@@ -18,20 +18,18 @@ Code and pre-trained models for "[P&sup2;-GAN: Efficient Style Transfer Using Si
 * opencv-python
 * tensorflow 1.x
 
-This project was implemented in tensorflow, and used `slim` API, which was removed in tensorflow 2.x, thus you need runing it on tensorflow 1.x.
+This project was implemented in tensorflow, and used `slim` API, which was removed in tensorflow 2.x, thus you need running it on tensorflow 1.x.
 
 ## Training
 
 **Dataset**
-
-It doesn't need a very large dataset, Pascal VOC Dataset is good enough. For a dataset like VOC2007, it contains about 10K images, training 2~3 epochs can gain good result.
+It doesn't need a very large dataset, Pascal VOC Dataset is good enough. For a dataset like VOC2007, it contains about 10K images, training 2~3 epochs can gain a good result.
 
 **Pre-trained VGG Model**
-The VGG16 model we used is here: [tensorflow-vgg](https://github.com/machrisaa/tensorflow-vgg), you neet to download the weights before training.
+The VGG16 model we used is here: [tensorflow-vgg](https://github.com/machrisaa/tensorflow-vgg), you need to download the weights file before training.
 
 **Training Command**
-
-After you prepared the pre-trained VGG model and dataset, you can training a model by the command as follow:
+After you prepared the pre-trained VGG model and dataset, you can train a model by the command as follows:
 
 ```bash
 python train.py --model model_path --style style_image_path --dataset dataset_path
@@ -52,14 +50,14 @@ Further, we added an argument `--lambda` in this example, it's the hyper paramet
 If you want to change the optimizer configuration, you need to edit `train.py`.
 
 In each iteration while the model is training, `cfg.json` will be reloaded, thus some configuration can be set on training time:
-* `epoch_lim`: how many training epochs will taken.
-* `preview`: allow render preview image while training.
-* `view_iter`: if `preview` valued `true`, the iteration to render preview image.
+* `epoch_lim`: how many training epochs will take.
+* `preview`: allow to render preview images while training.
+* `view_iter`: if `preview` valued `true`, render preview images at that iteration.
 
 ## Advanced Training Configurations
 
 **Custom Patch Size**
-Sometimes the texture primitives may be larger than the default patch size which is set to 9. You can use a lager patch size by the option `--ps`. In this demo version code, supported patch sizes are `9, 12, 15` and `16`.
+Sometimes the texture primitives may be larger than the default patch size, which is set to 9. You can use a larger patch size by the option `--ps`. In this demo version code, supported patch size configurations are `9, 12, 15` and `16`.
 
 For example:
 
@@ -70,7 +68,7 @@ python train.py --ps 15 --model model_save --style style/Van-Gogh-The-Starry-Nig
 Training with the command above, the patch size will be set to 15 * 15.
 
 **Custom Generator Structure**
-This customization won't be supported under a command line option, it's experimental. Since larger patch size will introducing more complex texture, and the generator is aiming at a light-weight network, there is only one residual block by the default configuration. Edit `model.py`, in the `g_residual_cfg`, set `l_num` to the number of residual blocks you want, for example `3` for 3 residual blocks.
+This customization won't be supported under a command line option, it's experimental. Since the larger patch size will introduce more complex texture, and the generator is aiming at a lightweight network, there is only one residual block by the default configuration. Edit `model.py`, in the `g_residual_cfg`, set `l_num` to the number of residual blocks you want, for example `3` for 3 residual blocks.
 
 ## Testing
 
@@ -80,7 +78,7 @@ Choose a model and run the command to test the model:
 python render.py --model model_path --inp input_path --oup output_path --size number [--cpu true]
 ```
 * `--model`: Choose a mode.
-* `--inp`: Input images' path.
+* `--inp`: Path to input images.
 * `--onp`: Path to save synthetic images.
 * `--size`: Processing image size.
 * `--cpu`: Optional, set `true` will processing by CPU.
@@ -91,19 +89,19 @@ For example:
 python render.py --model model_save --inp /home/username/Pictures/Wallpaper/ --oup output --size 256
 ```
 
+Note that `--inp` must be a directory, and `render.py` will process all images(extension with `jpg`, `bmp`, `png` and `jpeg`) under the directory. And the output directory must exist.
+
 ## Experimental Configurations for Testing
 
 **Noise Control**
-Sometimes, add noise on the input images can bring good visual effect. The input images won't be added in any noise by default, we implemented a Gaussian noise control option `--noise`, for example:
+Sometimes, adding noise on the input images can bring good visual effect. The input images won't be added in any noise by default, we implemented a Gaussian noise control option `--noise`, for example:
 
 ```bash
 python render.py --model model_save --inp /home/username/Pictures/Wallpaper/ --oup output --size 512 --noise 0.1
 ```
 
 **Aspect Ratio**
-In this project, input tensor shape will be configured while the tensorflow graph be initialzied. Thus, input tensor size will be set by the option `--size`. Although the synthetic image will be resized to the same shape as the input image, the rendering is done on the resized image(tensor), and output via a resize to the input shape, thus cause texture distortion.
-
-Just a experimentally function, `render-keep-ratio.py` will keep the aspect ratio while resize, but process only one input image each time. The command line usages is compatible with `render.py`. For example:
+In `render.py`, the input tensor shape will be configured while the tensorflow graph be initialized. The height and width of the input tensor are equal and set by the option `--size`. Therefore, the processing of the input images may not keep the aspect ratio, thus cause texture distortion. `render-keep-ratio.py` can keep the aspect ratio of the input image resize, but process only one input image each time. The command line usages are compatible with `render.py`, except `--inp`, you should specify an image file here. For example:
 
 ```bash
 python render-keep-ratio.py --model model_save --inp /home/username/Pictures/Wallpaper/test.jpg --oup output --size 1024

@@ -203,6 +203,6 @@ def sub_set(inset, index_tab):
 
 def silent_mkdir(path):
 	try:
-		os.mkdir(path)
+		os.makedirs(path)
 	except:
 		pass
