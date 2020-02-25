@@ -4,6 +4,11 @@ import os
 import numpy as np
 import tensorflow as tf
 import time
+# save np.load
+np_load_old = np.load
+
+# modify the default parameters of np.load
+np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
 
 VGG_MEAN = [103.939, 116.779, 123.68]
 
